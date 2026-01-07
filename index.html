@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Honey | Premium Services</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&family=Rajdhani:wght@500;600;700&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <div class="bg-glow"></div>
+
+    <nav class="navbar">
+        <div class="logo">
+            <i class="fa-solid fa-cube"></i> HONEY
+        </div>
+        
+        <div class="search-container">
+            <i class="fa-solid fa-magnifying-glass search-icon"></i>
+            <input type="text" placeholder="Search services..." class="search-input">
+        </div>
+
+        <ul class="nav-links">
+            <li><a href="#shop" class="active">Shop</a></li>
+            <li><a href="#safety">Status</a></li>
+            <li><a href="#support">Support</a></li>
+        </ul>
+    </nav>
+
+    <header class="hero">
+        <div class="hero-content">
+            <h1>UNDETECTED <span class="highlight">PERFECTION</span></h1>
+            <p>Premium automation and farming solutions. Secure. Reliable. Fast.</p>
+            <a href="#shop" class="cta-button">Browse Catalogue</a>
+        </div>
+    </header>
+
+    <section id="shop" class="container">
+        <h2 class="section-title">Available Services</h2>
+        
+        <div class="product-grid">
+            <div class="product-card" data-tilt>
+                <div class="card-header">
+                    <span class="badge">HOT</span>
+                    <i class="fa-solid fa-leaf product-icon"></i>
+                </div>
+                <h3>Sprout Farm</h3>
+                <p class="desc">High-speed sprout farming service. Minimum order of 20 units.</p>
+                <div class="price">0.00009 LTC <span class="per-unit">/ sprout</span></div>
+                <button class="buy-btn" onclick="openModal('sprout-modal')">Purchase</button>
+            </div>
+
+            <div class="product-card" data-tilt>
+                <div class="card-header">
+                    <span class="badge">NEW</span>
+                    <i class="fa-solid fa-robot product-icon"></i>
+                </div>
+                <h3>Auto Farm</h3>
+                <p class="desc">Fully automated farming for 24 hours. Undetected and efficient.</p>
+                <div class="price">0.015 LTC <span class="per-unit">/ day</span></div>
+                <button class="buy-btn" onclick="openModal('auto-modal')">Purchase</button>
+            </div>
+        </div>
+    </section>
+
+    <section id="safety" class="info-section">
+        <div class="container">
+            <h2 class="section-title">Why Choose Honey?</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <i class="fa-solid fa-shield-halved"></i>
+                    <h4>100% Undetected</h4>
+                    <p>Our private methods ensure your account safety remains our top priority.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-bolt"></i>
+                    <h4>Instant Delivery</h4>
+                    <p>Automated systems process your request immediately after confirmation.</p>
+                </div>
+                <div class="feature-item">
+                    <i class="fa-solid fa-user-secret"></i>
+                    <h4>Anonymous</h4>
+                    <p>We do not store logs. Crypto payments ensure complete privacy.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <div id="sprout-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('sprout-modal')">&times;</span>
+            <h2>Configure Sprout Farm</h2>
+            
+            <div class="input-group">
+                <label>Amount of Sprouts (Min 20)</label>
+                <input type="number" id="sprout-qty" value="20" min="20" oninput="calculateSprout()">
+            </div>
+
+            <div class="cost-summary">
+                <p>Total Cost:</p>
+                <h3 id="sprout-total">0.0018 LTC</h3>
+            </div>
+
+            <div class="payment-info">
+                <p>Send exactly the amount above to:</p>
+                <div class="wallet-box">
+                    <code id="wallet-address">LcnuMGFuDSvnKp1Dsgn7Wp38WM9UJWNeuo</code>
+                    <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <div class="warning-text">
+                    <i class="fa-solid fa-circle-info"></i> After sending, DM <strong>vayricxs</strong> with proof of purchase.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div id="auto-modal" class="modal">
+        <div class="modal-content">
+            <span class="close-btn" onclick="closeModal('auto-modal')">&times;</span>
+            <h2>Configure Auto Farm</h2>
+            
+            <div class="input-group">
+                <label>Duration (Days)</label>
+                <input type="number" id="auto-days" value="1" min="1" oninput="calculateAuto()">
+            </div>
+
+            <div class="cost-summary">
+                <p>Total Cost:</p>
+                <h3 id="auto-total">0.015 LTC</h3>
+            </div>
+
+            <div class="payment-info">
+                <p>Send exactly the amount above to:</p>
+                <div class="wallet-box">
+                    <code>LcnuMGFuDSvnKp1Dsgn7Wp38WM9UJWNeuo</code>
+                    <button class="copy-btn" onclick="copyAddress()"><i class="fa-regular fa-copy"></i></button>
+                </div>
+                <div class="warning-text">
+                    <i class="fa-solid fa-circle-info"></i> After sending, DM <strong>vayricxs</strong> with proof of purchase.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 HONEY. All rights reserved.</p>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
