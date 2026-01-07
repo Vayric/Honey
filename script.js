@@ -1,31 +1,53 @@
 /* --- CONFIGURATION --- */
 const PRICES = {
-    sprout: 0.00009, // LTC per sprout
-    auto: 0.015      // LTC per day
+    sprout: 0.00009,
+    auto: 0.015
 };
 
-// Wallet Address
 const WALLET_ADDRESS = "LcnuMGFuDSvnKp1Dsgn7Wp38WM9UJWNeuo";
 
-/* --- MODAL FUNCTIONS --- */
+/* --- SEARCH LOGIC --- */
+const searchInput = document.getElementById('serviceSearch');
 
-// Open a specific modal by ID
+searchInput.addEventListener('keypress', function (e) {
+    if (e.key === 'Enter') {
+        const query = searchInput.value.toLowerCase();
+        let targetId = "";
+
+        // Logic to determine where to scroll
+        if (query.includes('auto') || query.includes('farm')) {
+            targetId = "auto-card";
+        } else if (query.includes('sprout')) {
+            targetId = "sprout-card";
+        }
+
+        if (targetId) {
+            const element = document.getElementById(targetId);
+            
+            // Scroll to the element
+            element.scrollIntoView({ behavior: 'smooth', block: 'center' });
+
+            // Add a temporary glow highlight
+            element.classList.add('highlight-card');
+            setTimeout(() => {
+                element.classList.remove('highlight-card');
+            }, 2000);
+        } else {
+            alert("Service not found. Try 'auto' or 'sprout'.");
+        }
+    }
+});
+
+/* --- MODAL LOGIC --- */
 function openModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = "flex";
-    }
+    document.getElementById(modalId).style.display = "flex";
 }
 
-// Close a specific modal by ID
 function closeModal(modalId) {
-    const modal = document.getElementById(modalId);
-    if (modal) {
-        modal.style.display = "none";
-    }
+    document.getElementById(modalId).style.display = "none";
 }
 
-// Close modal if user clicks outside the box (on the dark background)
+// Close modal if user clicks outside the content box
 window.onclick = function(event) {
     if (event.target.classList.contains('modal')) {
         event.target.style.display = "none";
@@ -33,67 +55,34 @@ window.onclick = function(event) {
 }
 
 /* --- CALCULATION LOGIC --- */
-
-// Calculate Sprout Farm Cost
 function calculateSprout() {
-    const input = document.getElementById('sprout-qty');
-    const display = document.getElementById('sprout-total');
-    
-    // Get value, ensure it's at least 20
-    let qty = parseInt(input.value);
-    
-    // Safety check: if empty or invalid, treat as 0 (or min)
-    if (isNaN(qty) || qty < 0) qty = 0;
-
-    // Calculate total
-    const total = (qty * PRICES.sprout).toFixed(5); // 5 decimal places for crypto
-    
-    // Update display
-    display.innerText = `${total} LTC`;
+    const qty = document.getElementById('sprout-qty').value || 0;
+    const total = (qty * PRICES.sprout).toFixed(8); // Precision for small LTC amounts
+    document.getElementById('sprout-total').innerText = `${total} LTC`;
 }
 
-// Calculate Auto Farm Cost
 function calculateAuto() {
-    const input = document.getElementById('auto-days');
-    const display = document.getElementById('auto-total');
-    
-    // Get value, ensure it's at least 1
-    let days = parseInt(input.value);
-    
-    if (isNaN(days) || days < 0) days = 0;
-
-    // Calculate total
-    const total = (days * PRICES.auto).toFixed(5);
-    
-    // Update display
-    display.innerText = `${total} LTC`;
+    const days = document.getElementById('auto-days').value || 0;
+    const total = (days * PRICES.auto).toFixed(4);
+    document.getElementById('auto-total').innerText = `${total} LTC`;
 }
 
 /* --- UTILITIES --- */
-
-// Copy Wallet Address to Clipboard
 function copyAddress() {
-    navigator.clipboard.writeText(WALLET_ADDRESS).then(() => {
-        alert("Wallet address copied to clipboard!");
-    }).catch(err => {
-        console.error('Failed to copy: ', err);
-    });
+    // We can use a prompt or clipboard API
+    navigator.clipboard.writeText(WALLET_ADDRESS);
+    
+    // Visual feedback on the button if you want, or just a simple alert
+    alert("Address Copied: " + WALLET_ADDRESS);
 }
 
-// Add simple tilt effect to cards (Optional visual flair)
-const cards = document.querySelectorAll('.product-card');
-
-cards.forEach(card => {
+// Subtle Mouse Parallax for Cards
+document.querySelectorAll('.product-card').forEach(card => {
     card.addEventListener('mousemove', (e) => {
         const rect = card.getBoundingClientRect();
         const x = e.clientX - rect.left;
         const y = e.clientY - rect.top;
-        
-        // Simple subtle glow following mouse
-        card.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255,183,3,0.05), #141414)`;
-    });
-
-    card.addEventListener('mouseleave', () => {
-        card.style.background = '#141414';
+        card.style.setProperty('--mouse-x', `${x}px`);
+        card.style.setProperty('--mouse-y', `${y}px`);
     });
 });
